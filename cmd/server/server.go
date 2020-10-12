@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	log "github.com/sirupsen/logrus"
+	"github.com/weijunji/SA-Project/internal/server"
 )
 
 func main() {
-	fmt.Println("Start server")
+	log.Info("Start server")
+	log.Info(server.Add(2, 4))
 }
