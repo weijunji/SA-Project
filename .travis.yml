@@ -1,7 +1,7 @@
 language: go
 
 before_install:
-  - go get -t -v ./...
+  - go mod download
 
 script:
   - cp config/client/sap_client.yaml internal/client/
