@@ -7,6 +7,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
+	. "github.com/weijunji/SA-Project/pkg/tools"
 	"gopkg.in/yaml.v2"
 )
 
@@ -28,22 +29,16 @@ func init() {
 	}
 }
 
-func handleErr(err error) {
-	if err != nil {
-		log.Panic(err)
-	}
-}
-
 func initUUID() {
 	conf.UUID = generateUUID()
 	log.Info("UUID not exist, generate uuid: ", conf.UUID)
 
 	confFile, err := os.OpenFile(configFileName, os.O_WRONLY, 0666)
-	handleErr(err)
+	HandleErrPanic(err)
 	defer confFile.Close()
 
 	d, err := yaml.Marshal(&conf)
-	handleErr(err)
+	HandleErrPanic(err)
 	writer := bufio.NewWriter(confFile)
 	writer.WriteString(string(d))
 	writer.Flush()
@@ -51,9 +46,9 @@ func initUUID() {
 
 func readConfig() {
 	buf, err := ioutil.ReadFile(configFileName)
-	handleErr(err)
+	HandleErrPanic(err)
 	err = yaml.Unmarshal(buf, &conf)
-	handleErr(err)
+	HandleErrPanic(err)
 	_, err = uuid.FromString(conf.UUID)
 	if err != nil {
 		initUUID()
