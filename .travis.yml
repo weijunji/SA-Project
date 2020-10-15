@@ -13,7 +13,7 @@ before_install:
 
 script:
   - cp config/client/sap_client.yaml internal/client/
-  - cp config/client/sap_server.yaml internal/server/
+  - cp config/server/sap_server.yaml internal/server/
   - go test -v ./... -race -coverprofile=coverage.txt -covermode=atomic
   - go build cmd/server/server.go
   - go build cmd/client/client.go
