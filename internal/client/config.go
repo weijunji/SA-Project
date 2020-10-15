@@ -22,7 +22,7 @@ var conf Config = Config{"", 2}
 
 func init() {
 	log.Info("Read config file")
-	if !fileExist(configFileName) {
+	if !FileExist(configFileName) {
 		log.Fatal("No config file")
 	} else {
 		readConfig()
@@ -53,11 +53,6 @@ func readConfig() {
 	if err != nil {
 		initUUID()
 	}
-}
-
-func fileExist(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil || os.IsExist(err)
 }
 
 func generateUUID() string {
