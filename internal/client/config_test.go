@@ -26,4 +26,5 @@ func (s *ConfigTest) TestGenUUID(c *C) {
 func (s *ConfigTest) TestConfig(c *C) {
 	c.Check(GetHeartbeat(), Equals, 2)
 	c.Check(GetAuth(), Equals, "auth-7609AF5AD2A3C6B2")
+	c.Check(GetHost(), Equals, "127.0.0.1:1628")
 }
