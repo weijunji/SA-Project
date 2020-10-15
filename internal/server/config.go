@@ -9,8 +9,8 @@ import (
 )
 
 type Config struct {
-	port int32
-	auth string
+	Port int32
+	Auth string
 }
 
 const configFileName string = "sap_server.yaml"
@@ -31,4 +31,12 @@ func readConfig() {
 	HandleErrPanic(err)
 	err = yaml.Unmarshal(buf, &conf)
 	HandleErrPanic(err)
+}
+
+func GetPort() int32 {
+	return conf.Port
+}
+
+func GetAuth() string {
+	return conf.Auth
 }

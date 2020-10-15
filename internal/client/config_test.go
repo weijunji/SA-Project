@@ -7,7 +7,7 @@ import (
 )
 
 // Hook up gocheck into the "go test" runner.
-func Test(t *testing.T) { TestingT(t) }
+func TestConfig(t *testing.T) { TestingT(t) }
 
 type ConfigTest struct{}
 
@@ -23,7 +23,6 @@ func (s *ConfigTest) TestGenUUID(c *C) {
 	c.Assert(generateUUID(), Not(Equals), generateUUID())
 }
 
-func (s *ConfigTest) TestFileExist(c *C) {
-	c.Check(fileExist("go.mod") || fileExist("config.go"), Equals, true)
-	c.Check(fileExist("fileNotExist"), Equals, false)
+func (s *ConfigTest) TestConfig(c *C) {
+	c.Check(GetHeartbeat(), Equals, 2)
 }
