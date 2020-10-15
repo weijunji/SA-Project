@@ -16,3 +16,7 @@
 
 # CI/CD
 coverage.txt
+
+# config
+sap_server.yaml
+sap_client.yaml

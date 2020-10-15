@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Port int32
+	Port uint16
 	Auth string
 }
 
@@ -33,7 +33,7 @@ func readConfig() {
 	HandleErrPanic(err)
 }
 
-func GetPort() int32 {
+func GetPort() uint16 {
 	return conf.Port
 }
 

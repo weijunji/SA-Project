@@ -20,6 +20,6 @@ func (s *ConfigTest) TearDownSuite(c *C) {
 }
 
 func (s *ConfigTest) TestConfig(c *C) {
-	c.Check(GetPort(), Equals, int32(1628))
+	c.Check(GetPort(), Equals, uint16(1628))
 	c.Check(GetAuth(), Equals, "auth-7609AF5AD2A3C6B2")
 }
