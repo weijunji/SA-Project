@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/auth"
 	log "github.com/sirupsen/logrus"
@@ -16,6 +18,7 @@ func main() {
 	)
 	srv.RouteCall(new(Home))
 	srv.ListenAndServe()
+	// _, b := srv.GetSession("748fb10f-0e83-11eb-89c8-be8385ee77ba")
 }
 
 var authChecker = auth.NewCheckerPlugin(
@@ -25,10 +28,14 @@ var authChecker = auth.NewCheckerPlugin(
 		if !stat.OK() {
 			return
 		}
-		log.Infof("auth info: %v", authInfo)
-		if server.GetAuth() != authInfo {
-			return nil, erpc.NewStatus(403, "auth fail", "auth fail detail")
+		auths := strings.Split(authInfo, "%")
+		if len(auths) == 1 {
+			return nil, erpc.NewStatus(403, "auth fail", "no client uuid")
 		}
+		if server.GetAuth() != auths[0] {
+			return nil, erpc.NewStatus(403, "auth fail", "wrong auth code")
+		}
+		sess.SetID(auths[1])
 		return "pass", nil
 	},
 	erpc.WithBodyCodec('s'),

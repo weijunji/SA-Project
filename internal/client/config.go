@@ -14,11 +14,13 @@ import (
 type Config struct {
 	UUID      string
 	HeartBeat int
+	Auth      string
+	Host      string
 }
 
 const configFileName string = "sap_client.yaml"
 
-var conf Config = Config{"", 2}
+var conf Config
 
 func init() {
 	log.Info("Read config file")
@@ -66,4 +68,12 @@ func GetUUID() string {
 
 func GetHeartbeat() int {
 	return conf.HeartBeat
+}
+
+func GetAuth() string {
+	return conf.Auth
+}
+
+func GetHost() string {
+	return conf.Host
 }
