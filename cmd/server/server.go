@@ -5,6 +5,7 @@ import (
 
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/auth"
+	"github.com/henrylee2cn/erpc/v6/plugin/heartbeat"
 	log "github.com/sirupsen/logrus"
 	"github.com/weijunji/SA-Project/internal/server"
 )
@@ -15,6 +16,7 @@ func main() {
 	srv := erpc.NewPeer(
 		erpc.PeerConfig{ListenPort: port},
 		authChecker,
+		heartbeat.NewPong(),
 	)
 	srv.RouteCall(new(Home))
 	srv.ListenAndServe()

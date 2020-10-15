@@ -1,8 +1,11 @@
 package main
 
 import (
+	"time"
+
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/auth"
+	"github.com/henrylee2cn/erpc/v6/plugin/heartbeat"
 	log "github.com/sirupsen/logrus"
 	"github.com/weijunji/SA-Project/internal/client"
 )
@@ -10,8 +13,9 @@ import (
 func main() {
 	log.Infof("Connecting to server %s ...", client.GetHost())
 	cli := erpc.NewPeer(
-		erpc.PeerConfig{},
+		erpc.PeerConfig{PrintDetail: true},
 		authBearer,
+		heartbeat.NewPing(client.GetHeartbeat(), true),
 	)
 	sess, stat := cli.Dial(client.GetHost())
 	if !stat.OK() {
@@ -29,6 +33,7 @@ func main() {
 		log.Error(stat)
 	}
 	log.Infof("result:%v", result)
+	time.Sleep(time.Second * 20)
 }
 
 var authBearer = auth.NewBearerPlugin(
