@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/auth"
 	"github.com/henrylee2cn/erpc/v6/plugin/heartbeat"
@@ -33,7 +31,10 @@ func main() {
 		log.Error(stat)
 	}
 	log.Infof("result:%v", result)
-	time.Sleep(time.Second * 20)
+
+	// hang up
+	c := make(chan int)
+	<-c
 }
 
 var authBearer = auth.NewBearerPlugin(
