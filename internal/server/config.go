@@ -3,7 +3,7 @@ package server
 import (
 	"io/ioutil"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/henrylee2cn/erpc/v6"
 	. "github.com/weijunji/SA-Project/pkg/tools"
 	"gopkg.in/yaml.v2"
 )
@@ -18,9 +18,9 @@ const configFileName string = "sap_server.yaml"
 var conf Config
 
 func init() {
-	log.Info("Read config file")
+	erpc.Infof("Read config file")
 	if !FileExist(configFileName) {
-		log.Fatal("Cannot find config file")
+		erpc.Fatalf("Cannot find config file")
 	} else {
 		readConfig()
 	}
