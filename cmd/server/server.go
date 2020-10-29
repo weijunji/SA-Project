@@ -21,6 +21,7 @@ func main() {
 		server.NewDisconnectPlugin(),
 	)
 	srv.RouteCall(new(Home))
+	srv.RoutePush(new(server.Upload))
 
 	go func() {
 		time.Sleep(time.Second * 20)

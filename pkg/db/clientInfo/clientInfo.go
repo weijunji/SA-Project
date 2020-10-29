@@ -25,21 +25,29 @@ func NewClientInfo(uuid string, online bool, locked bool) *ClientInfo {
 }
 
 func (c *ClientInfo) Offline() {
-	c.Status = false
-	db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": false})
+	if c.Status {
+		c.Status = false
+		db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": false})
+	}
 }
 
 func (c *ClientInfo) Online() {
-	c.Status = true
-	db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": true})
+	if !c.Status {
+		c.Status = true
+		db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": true})
+	}
 }
 
 func (c *ClientInfo) Unlock() {
-	c.Locked = false
-	db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": false})
+	if c.Locked {
+		c.Locked = false
+		db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": false})
+	}
 }
 
 func (c *ClientInfo) Lock() {
-	c.Locked = true
-	db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": true})
+	if !c.Locked {
+		c.Locked = true
+		db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": true})
+	}
 }

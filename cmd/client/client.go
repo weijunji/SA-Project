@@ -23,6 +23,9 @@ func main() {
 		log.Fatal(stat)
 	}
 	log.Info("Connected")
+
+	sess.Push("/upload/status", false)
+
 	var result interface{}
 	stat = sess.Call("/home/test",
 		map[string]string{
