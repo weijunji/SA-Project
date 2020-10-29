@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/heartbeat"
 	log "github.com/sirupsen/logrus"
@@ -24,21 +22,9 @@ func main() {
 	}
 	log.Info("Connected")
 
-	sess.Push("/upload/status", false)
-
-	var result interface{}
-	stat = sess.Call("/home/test",
-		map[string]string{
-			"author": "henrylee2cn",
-		},
-		&result,
-	).Status()
-	if !stat.OK() {
-		log.Error(stat)
-	}
-	log.Infof("result:%v", result)
+	sess.Push("/upload/status", true)
 
 	// hang up
 	c := make(chan int)
-	os.Exit(<-c)
+	<-c
 }

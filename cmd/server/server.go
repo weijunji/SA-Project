@@ -35,13 +35,3 @@ func main() {
 	}()
 	srv.ListenAndServe()
 }
-
-type Home struct {
-	erpc.CallCtx
-}
-
-func (h *Home) Test(arg *map[string]string) (map[string]interface{}, *erpc.Status) {
-	return map[string]interface{}{
-		"arg": *arg,
-	}, nil
-}
