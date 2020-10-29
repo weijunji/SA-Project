@@ -2,10 +2,9 @@ package server
 
 import (
 	"github.com/henrylee2cn/erpc/v6"
-	log "github.com/sirupsen/logrus"
+	"github.com/weijunji/SA-Project/pkg/db/clientInfo"
 )
 
-// NewDisconnectPlugin Returns a disconnectHandle plugin.
 func NewDisconnectPlugin() *disconnectHandle {
 	return &disconnectHandle{}
 }
@@ -21,6 +20,11 @@ func (h *disconnectHandle) Name() string {
 }
 
 func (h *disconnectHandle) PostDisconnect(sess erpc.BaseSession) *erpc.Status {
-	log.Infof("[%s] disconnect", sess.ID())
+	erpc.Infof("[%s] disconnect", sess.ID())
+	if val, ok := sess.Swap().Load("info"); ok {
+		val.(*clientInfo.ClientInfo).Offline()
+	} else {
+		erpc.Errorf("Load info failed")
+	}
 	return nil
 }

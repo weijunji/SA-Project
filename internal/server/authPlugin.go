@@ -5,6 +5,7 @@ import (
 
 	"github.com/henrylee2cn/erpc/v6"
 	"github.com/henrylee2cn/erpc/v6/plugin/auth"
+	"github.com/weijunji/SA-Project/pkg/db/clientInfo"
 )
 
 func NewAuthPlugin() erpc.Plugin {
@@ -23,7 +24,8 @@ func NewAuthPlugin() erpc.Plugin {
 				return nil, erpc.NewStatus(403, "auth fail", "wrong auth code")
 			}
 			sess.SetID(auths[1])
-			// TODO: 写入客户端信息到数据库
+			c := clientInfo.NewClientInfo(auths[1], true, true)
+			sess.Swap().Store("info", c)
 			return "pass", nil
 		},
 		erpc.WithBodyCodec('s'),
