@@ -1,20 +1,23 @@
 package main
 
 import (
+	"os"
+
 	"github.com/henrylee2cn/erpc/v6"
-	"github.com/henrylee2cn/erpc/v6/plugin/auth"
 	"github.com/henrylee2cn/erpc/v6/plugin/heartbeat"
 	log "github.com/sirupsen/logrus"
 	"github.com/weijunji/SA-Project/internal/client"
 )
 
 func main() {
+	defer erpc.FlushLogger()
 	log.Infof("Connecting to server %s ...", client.GetHost())
 	cli := erpc.NewPeer(
 		erpc.PeerConfig{PrintDetail: true},
-		authBearer,
+		client.NewAuthPlugin(),
 		heartbeat.NewPing(client.GetHeartbeat(), true),
 	)
+	cli.RoutePush(new(client.Control))
 	sess, stat := cli.Dial(client.GetHost())
 	if !stat.OK() {
 		log.Fatal(stat)
@@ -34,18 +37,5 @@ func main() {
 
 	// hang up
 	c := make(chan int)
-	<-c
+	os.Exit(<-c)
 }
-
-var authBearer = auth.NewBearerPlugin(
-	func(sess auth.Session, fn auth.SendOnce) (stat *erpc.Status) {
-		var ret string
-		stat = fn(client.GetAuth()+"%"+client.GetUUID(), &ret)
-		if !stat.OK() {
-			return
-		}
-		log.Infof("auth info: %s, result: %s", client.GetAuth(), ret)
-		return
-	},
-	erpc.WithBodyCodec('s'),
-)
