@@ -20,7 +20,6 @@ func main() {
 		heartbeat.NewPong(),
 		server.NewDisconnectPlugin(),
 	)
-	srv.RouteCall(new(Home))
 	srv.RoutePush(new(server.Upload))
 
 	go func() {
