@@ -17,6 +17,7 @@ script:
   - go test -v ./... -race -coverprofile=coverage.txt -covermode=atomic
   - go build cmd/server/server.go
   - go build cmd/client/client.go
+  - go build cmd/web/web.go
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
