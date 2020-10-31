@@ -9,8 +9,6 @@ import (
 )
 
 func main() {
-	ws := new(restful.WebService).Path("/test")
-	restful.Add(ws)
 	restful.Add(web.NewClientsService())
 	cors := restful.CrossOriginResourceSharing{
 		ExposeHeaders:  []string{"X-Custom-Header"},
