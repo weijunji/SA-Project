@@ -3,6 +3,7 @@ module github.com/weijunji/SA-Project
 go 1.15
 
 require (
+	github.com/emicklei/go-restful/v3 v3.3.3
 	github.com/henrylee2cn/erpc/v6 v6.3.4
 	github.com/mattn/go-sqlite3 v1.14.3
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
