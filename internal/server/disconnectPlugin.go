@@ -22,7 +22,7 @@ func (h *disconnectHandle) Name() string {
 func (h *disconnectHandle) PostDisconnect(sess erpc.BaseSession) *erpc.Status {
 	erpc.Infof("[%s] disconnect", sess.ID())
 	if val, ok := sess.Swap().Load("info"); ok {
-		val.(*clientInfo.ClientInfo).Offline()
+		val.(*clientInfo.ClientInfo).OfflineOp()
 	} else {
 		erpc.Errorf("Load info failed")
 	}

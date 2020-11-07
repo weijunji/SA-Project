@@ -7,7 +7,8 @@ import (
 
 type ClientInfo struct {
 	UUID   string `gorm:"primaryKey"`
-	Status bool   // true: online false: offline
+	Name   string
+	Online bool
 	Locked bool
 }
 
@@ -15,37 +16,49 @@ func init() {
 	db.GetDB().AutoMigrate(&ClientInfo{})
 }
 
+func GetClientInfos() []ClientInfo {
+	var result []ClientInfo
+	db.GetDB().Find(&result)
+	return result
+}
+
+func GetClient(uuid string) *ClientInfo {
+	c := new(ClientInfo)
+	db.GetDB().Where("uuid = ?", uuid).First(c)
+	return c
+}
+
 func NewClientInfo(uuid string, online bool, locked bool) *ClientInfo {
-	c := &ClientInfo{uuid, online, locked}
+	c := &ClientInfo{uuid, uuid, online, locked}
 	db.GetDB().Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "uuid"}},
-		DoUpdates: clause.AssignmentColumns([]string{"status", "locked"}),
+		DoUpdates: clause.AssignmentColumns([]string{"online", "locked"}),
 	}).Create(c)
 	return c
 }
 
-func (c *ClientInfo) Offline() {
-	if c.Status {
-		c.Status = false
-		db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": false})
+func (c *ClientInfo) OfflineOp() {
+	if c.Online {
+		c.Online = false
+		db.GetDB().Model(c).Select("online").Updates(map[string]interface{}{"online": false})
 	}
 }
 
-func (c *ClientInfo) Online() {
-	if !c.Status {
-		c.Status = true
-		db.GetDB().Model(c).Select("status").Updates(map[string]interface{}{"status": true})
+func (c *ClientInfo) OnlineOp() {
+	if !c.Online {
+		c.Online = true
+		db.GetDB().Model(c).Select("online").Updates(map[string]interface{}{"online": true})
 	}
 }
 
-func (c *ClientInfo) Unlock() {
+func (c *ClientInfo) UnlockOp() {
 	if c.Locked {
 		c.Locked = false
 		db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": false})
 	}
 }
 
-func (c *ClientInfo) Lock() {
+func (c *ClientInfo) LockOp() {
 	if !c.Locked {
 		c.Locked = true
 		db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": true})
