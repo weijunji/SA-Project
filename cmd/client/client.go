@@ -22,6 +22,7 @@ func main() {
 	}
 	log.Info("Connected")
 
+	// push locked status to server
 	sess.Push("/upload/status", true)
 
 	// hang up

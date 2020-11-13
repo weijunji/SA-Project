@@ -1,0 +1,4 @@
+uuid: web-server
+heartbeat: 10
+auth: auth-7609AF5AD2A3C6B2
+host: 127.0.0.1:1628

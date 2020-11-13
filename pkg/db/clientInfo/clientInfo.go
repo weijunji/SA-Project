@@ -64,3 +64,7 @@ func (c *ClientInfo) LockOp() {
 		db.GetDB().Model(c).Select("locked").Updates(map[string]interface{}{"locked": true})
 	}
 }
+
+func (c *ClientInfo) SetName(name string) {
+	db.GetDB().Model(c).Select("name").Updates(map[string]interface{}{"name": name})
+}
