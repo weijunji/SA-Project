@@ -21,6 +21,10 @@ func NewClientsService() *restful.WebService {
 
 	ws.Route(ws.PUT("/{uuid}").To(putClient).
 		Doc("change client status"))
+
+	ws.Route(ws.GET("/logs/{uuid}").To(getLogs).
+		Doc("get client logs").
+		Writes([]clientInfo.ClientLog{}))
 	return ws
 }
 
@@ -69,5 +73,16 @@ func putClient(request *restful.Request, response *restful.Response) {
 			}
 		}
 		response.WriteAsJson("Success")
+	}
+}
+
+func getLogs(request *restful.Request, response *restful.Response) {
+	uuid := request.PathParameter("uuid")
+	logs := clientInfo.GetClientLogs(uuid)
+	erpc.Debugf("%+v", logs)
+	if logs != nil && len(logs) > 0 {
+		response.WriteAsJson(logs)
+	} else {
+		response.WriteError(http.StatusNotFound, errors.New("Logs not found"))
 	}
 }
