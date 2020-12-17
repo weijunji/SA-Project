@@ -13,12 +13,12 @@ import (
 func main() {
 	restful.Add(web.NewClientsService())
 	cors := restful.CrossOriginResourceSharing{
-		ExposeHeaders:  []string{"X-Custom-Header"},
-		AllowedHeaders: []string{"X-Custom-Header", "X-Additional-Header"},
-		CookiesAllowed: true,
+		ExposeHeaders:  []string{"*"},
+		AllowedHeaders: []string{"content-type"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
+		CookiesAllowed: false,
 		Container:      restful.DefaultContainer}
 	restful.Filter(cors.Filter)
-	restful.Filter(web.BasicAuthenticate)
 	go func() {
 		erpc.Infof("Start server on localhost:80")
 		http.ListenAndServe(":80", nil)
